@@ -1,0 +1,408 @@
+GAS LISTING /tmp/ccihkUuv.s 			page 1
+
+
+   1              		.file	"IOBuffer.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_ZN8IOBuffer3putEc
+   9              	_ZN8IOBuffer3putEc:
+  10              	.LFB50:
+  11              		.file 1 "src/IOBuffer.cpp"
+   1:src/IOBuffer.cpp **** //
+   2:src/IOBuffer.cpp **** // Created by os on 5/16/24.
+   3:src/IOBuffer.cpp **** //
+   4:src/IOBuffer.cpp **** #include "../h/IOBuffer.hpp"
+   5:src/IOBuffer.cpp **** #include "../test/printing.hpp"
+   6:src/IOBuffer.cpp **** void IOBuffer::put(char c) {
+  12              		.loc 1 6 28
+  13              		.cfi_startproc
+  14              	.LVL0:
+  15 0000 130101FE 		addi	sp,sp,-32
+  16              		.cfi_def_cfa_offset 32
+  17 0004 233C1100 		sd	ra,24(sp)
+  18 0008 23388100 		sd	s0,16(sp)
+  19 000c 23349100 		sd	s1,8(sp)
+  20 0010 23302101 		sd	s2,0(sp)
+  21              		.cfi_offset 1, -8
+  22              		.cfi_offset 8, -16
+  23              		.cfi_offset 9, -24
+  24              		.cfi_offset 18, -32
+  25 0014 13040102 		addi	s0,sp,32
+  26              		.cfi_def_cfa 8, 0
+  27 0018 93040500 		mv	s1,a0
+  28 001c 13890500 		mv	s2,a1
+   7:src/IOBuffer.cpp ****     spaceAvailable->wait();
+  29              		.loc 1 7 5
+  30              		.loc 1 7 25 is_stmt 0
+  31 0020 03350502 		ld	a0,32(a0)
+  32              	.LVL1:
+  33 0024 97000000 		call	_ZN10kSemaphore4waitEv@plt
+  33      E7800000 
+  34              	.LVL2:
+   8:src/IOBuffer.cpp ****     buffer[tail] = c;
+  35              		.loc 1 8 5 is_stmt 1
+  36 002c 83B70400 		ld	a5,0(s1)
+  37              		.loc 1 8 12 is_stmt 0
+  38 0030 03B70401 		ld	a4,16(s1)
+  39              		.loc 1 8 16
+  40 0034 B387E700 		add	a5,a5,a4
+  41              		.loc 1 8 18
+  42 0038 23802701 		sb	s2,0(a5)
+   9:src/IOBuffer.cpp ****     tail = (tail + 1) % size;
+  43              		.loc 1 9 5 is_stmt 1
+  44              		.loc 1 9 13 is_stmt 0
+  45 003c 83B70401 		ld	a5,16(s1)
+  46              		.loc 1 9 18
+  47 0040 93871700 		addi	a5,a5,1
+  48              		.loc 1 9 25
+GAS LISTING /tmp/ccihkUuv.s 			page 2
+
+
+  49 0044 03B78401 		ld	a4,24(s1)
+  50              		.loc 1 9 23
+  51 0048 B3F7E702 		remu	a5,a5,a4
+  52              		.loc 1 9 10
+  53 004c 23B8F400 		sd	a5,16(s1)
+  10:src/IOBuffer.cpp ****     itemAvailable->signal();
+  54              		.loc 1 10 5 is_stmt 1
+  55              		.loc 1 10 26 is_stmt 0
+  56 0050 03B58402 		ld	a0,40(s1)
+  57 0054 97000000 		call	_ZN10kSemaphore6signalEv@plt
+  57      E7800000 
+  58              	.LVL3:
+  11:src/IOBuffer.cpp **** }
+  59              		.loc 1 11 1
+  60 005c 83308101 		ld	ra,24(sp)
+  61              		.cfi_restore 1
+  62 0060 03340101 		ld	s0,16(sp)
+  63              		.cfi_restore 8
+  64              		.cfi_def_cfa 2, 32
+  65 0064 83348100 		ld	s1,8(sp)
+  66              		.cfi_restore 9
+  67              	.LVL4:
+  68 0068 03390100 		ld	s2,0(sp)
+  69              		.cfi_restore 18
+  70 006c 13010102 		addi	sp,sp,32
+  71              		.cfi_def_cfa_offset 0
+  72 0070 67800000 		jr	ra
+  73              		.cfi_endproc
+  74              	.LFE50:
+  76              		.align	2
+  77              		.globl	_ZN8IOBuffer3getEv
+  79              	_ZN8IOBuffer3getEv:
+  80              	.LFB51:
+  12:src/IOBuffer.cpp **** 
+  13:src/IOBuffer.cpp **** char IOBuffer::get() {
+  81              		.loc 1 13 22 is_stmt 1
+  82              		.cfi_startproc
+  83              	.LVL5:
+  84 0074 130101FD 		addi	sp,sp,-48
+  85              		.cfi_def_cfa_offset 48
+  86 0078 23341102 		sd	ra,40(sp)
+  87 007c 23308102 		sd	s0,32(sp)
+  88 0080 233C9100 		sd	s1,24(sp)
+  89              		.cfi_offset 1, -8
+  90              		.cfi_offset 8, -16
+  91              		.cfi_offset 9, -24
+  92 0084 13040103 		addi	s0,sp,48
+  93              		.cfi_def_cfa 8, 0
+  94 0088 93040500 		mv	s1,a0
+  14:src/IOBuffer.cpp ****     itemAvailable->wait();
+  95              		.loc 1 14 5
+  96              		.loc 1 14 24 is_stmt 0
+  97 008c 03358502 		ld	a0,40(a0)
+  98              	.LVL6:
+  99 0090 97000000 		call	_ZN10kSemaphore4waitEv@plt
+  99      E7800000 
+ 100              	.LVL7:
+GAS LISTING /tmp/ccihkUuv.s 			page 3
+
+
+  15:src/IOBuffer.cpp ****     char volatile c = buffer[head];
+ 101              		.loc 1 15 5 is_stmt 1
+ 102              		.loc 1 15 23 is_stmt 0
+ 103 0098 03B70400 		ld	a4,0(s1)
+ 104              		.loc 1 15 30
+ 105 009c 83B78400 		ld	a5,8(s1)
+ 106              		.loc 1 15 34
+ 107 00a0 3307F700 		add	a4,a4,a5
+ 108 00a4 03470700 		lbu	a4,0(a4)
+ 109              		.loc 1 15 19
+ 110 00a8 A30FE4FC 		sb	a4,-33(s0)
+  16:src/IOBuffer.cpp ****     head = (head + 1) % size;
+ 111              		.loc 1 16 5 is_stmt 1
+ 112              		.loc 1 16 18 is_stmt 0
+ 113 00ac 93871700 		addi	a5,a5,1
+ 114              		.loc 1 16 25
+ 115 00b0 03B78401 		ld	a4,24(s1)
+ 116              		.loc 1 16 23
+ 117 00b4 B3F7E702 		remu	a5,a5,a4
+ 118              		.loc 1 16 10
+ 119 00b8 23B4F400 		sd	a5,8(s1)
+  17:src/IOBuffer.cpp ****     spaceAvailable->signal();
+ 120              		.loc 1 17 5 is_stmt 1
+ 121              		.loc 1 17 27 is_stmt 0
+ 122 00bc 03B50402 		ld	a0,32(s1)
+ 123 00c0 97000000 		call	_ZN10kSemaphore6signalEv@plt
+ 123      E7800000 
+ 124              	.LVL8:
+  18:src/IOBuffer.cpp ****     return c;
+ 125              		.loc 1 18 5 is_stmt 1
+ 126              		.loc 1 18 12 is_stmt 0
+ 127 00c8 0345F4FD 		lbu	a0,-33(s0)
+  19:src/IOBuffer.cpp **** }
+ 128              		.loc 1 19 1
+ 129 00cc 1375F50F 		andi	a0,a0,0xff
+ 130 00d0 83308102 		ld	ra,40(sp)
+ 131              		.cfi_restore 1
+ 132 00d4 03340102 		ld	s0,32(sp)
+ 133              		.cfi_restore 8
+ 134              		.cfi_def_cfa 2, 48
+ 135 00d8 83348101 		ld	s1,24(sp)
+ 136              		.cfi_restore 9
+ 137              	.LVL9:
+ 138 00dc 13010103 		addi	sp,sp,48
+ 139              		.cfi_def_cfa_offset 0
+ 140 00e0 67800000 		jr	ra
+ 141              		.cfi_endproc
+ 142              	.LFE51:
+ 144              	.Letext0:
+ 145              		.file 2 "src/../h/../lib/hw.h"
+ 146              		.file 3 "src/../h/tcb.hpp"
+ 147              		.file 4 "src/../h/kSemaphore.hpp"
+ 148              		.file 5 "src/../h/IOBuffer.hpp"
+ 149              		.file 6 "src/../h/../test/../h/syscall_c.hpp"
+GAS LISTING /tmp/ccihkUuv.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 IOBuffer.cpp
+     /tmp/ccihkUuv.s:9      .text:0000000000000000 _ZN8IOBuffer3putEc
+     /tmp/ccihkUuv.s:13     .text:0000000000000000 .L0 
+     /tmp/ccihkUuv.s:15     .text:0000000000000000 .L0 
+     /tmp/ccihkUuv.s:16     .text:0000000000000004 .L0 
+     /tmp/ccihkUuv.s:21     .text:0000000000000014 .L0 
+     /tmp/ccihkUuv.s:22     .text:0000000000000014 .L0 
+     /tmp/ccihkUuv.s:23     .text:0000000000000014 .L0 
+     /tmp/ccihkUuv.s:24     .text:0000000000000014 .L0 
+     /tmp/ccihkUuv.s:26     .text:0000000000000018 .L0 
+     /tmp/ccihkUuv.s:30     .text:0000000000000020 .L0 
+     /tmp/ccihkUuv.s:31     .text:0000000000000020 .L0 
+     /tmp/ccihkUuv.s:36     .text:000000000000002c .L0 
+     /tmp/ccihkUuv.s:38     .text:0000000000000030 .L0 
+     /tmp/ccihkUuv.s:40     .text:0000000000000034 .L0 
+     /tmp/ccihkUuv.s:42     .text:0000000000000038 .L0 
+     /tmp/ccihkUuv.s:44     .text:000000000000003c .L0 
+     /tmp/ccihkUuv.s:45     .text:000000000000003c .L0 
+     /tmp/ccihkUuv.s:47     .text:0000000000000040 .L0 
+     /tmp/ccihkUuv.s:49     .text:0000000000000044 .L0 
+     /tmp/ccihkUuv.s:51     .text:0000000000000048 .L0 
+     /tmp/ccihkUuv.s:53     .text:000000000000004c .L0 
+     /tmp/ccihkUuv.s:55     .text:0000000000000050 .L0 
+     /tmp/ccihkUuv.s:56     .text:0000000000000050 .L0 
+     /tmp/ccihkUuv.s:60     .text:000000000000005c .L0 
+     /tmp/ccihkUuv.s:61     .text:0000000000000060 .L0 
+     /tmp/ccihkUuv.s:63     .text:0000000000000064 .L0 
+     /tmp/ccihkUuv.s:64     .text:0000000000000064 .L0 
+     /tmp/ccihkUuv.s:66     .text:0000000000000068 .L0 
+     /tmp/ccihkUuv.s:69     .text:000000000000006c .L0 
+     /tmp/ccihkUuv.s:71     .text:0000000000000070 .L0 
+     /tmp/ccihkUuv.s:73     .text:0000000000000074 .L0 
+     /tmp/ccihkUuv.s:79     .text:0000000000000074 _ZN8IOBuffer3getEv
+     /tmp/ccihkUuv.s:82     .text:0000000000000074 .L0 
+     /tmp/ccihkUuv.s:84     .text:0000000000000074 .L0 
+     /tmp/ccihkUuv.s:85     .text:0000000000000078 .L0 
+     /tmp/ccihkUuv.s:89     .text:0000000000000084 .L0 
+     /tmp/ccihkUuv.s:90     .text:0000000000000084 .L0 
+     /tmp/ccihkUuv.s:91     .text:0000000000000084 .L0 
+     /tmp/ccihkUuv.s:93     .text:0000000000000088 .L0 
+     /tmp/ccihkUuv.s:96     .text:000000000000008c .L0 
+     /tmp/ccihkUuv.s:97     .text:000000000000008c .L0 
+     /tmp/ccihkUuv.s:102    .text:0000000000000098 .L0 
+     /tmp/ccihkUuv.s:103    .text:0000000000000098 .L0 
+     /tmp/ccihkUuv.s:105    .text:000000000000009c .L0 
+     /tmp/ccihkUuv.s:107    .text:00000000000000a0 .L0 
+     /tmp/ccihkUuv.s:110    .text:00000000000000a8 .L0 
+     /tmp/ccihkUuv.s:112    .text:00000000000000ac .L0 
+     /tmp/ccihkUuv.s:113    .text:00000000000000ac .L0 
+     /tmp/ccihkUuv.s:115    .text:00000000000000b0 .L0 
+     /tmp/ccihkUuv.s:117    .text:00000000000000b4 .L0 
+     /tmp/ccihkUuv.s:119    .text:00000000000000b8 .L0 
+     /tmp/ccihkUuv.s:121    .text:00000000000000bc .L0 
+     /tmp/ccihkUuv.s:122    .text:00000000000000bc .L0 
+     /tmp/ccihkUuv.s:126    .text:00000000000000c8 .L0 
+     /tmp/ccihkUuv.s:127    .text:00000000000000c8 .L0 
+GAS LISTING /tmp/ccihkUuv.s 			page 5
+
+
+     /tmp/ccihkUuv.s:129    .text:00000000000000cc .L0 
+     /tmp/ccihkUuv.s:131    .text:00000000000000d4 .L0 
+     /tmp/ccihkUuv.s:133    .text:00000000000000d8 .L0 
+     /tmp/ccihkUuv.s:134    .text:00000000000000d8 .L0 
+     /tmp/ccihkUuv.s:136    .text:00000000000000dc .L0 
+     /tmp/ccihkUuv.s:139    .text:00000000000000e0 .L0 
+     /tmp/ccihkUuv.s:141    .text:00000000000000e4 .L0 
+     /tmp/ccihkUuv.s:150    .text:00000000000000e4 .L0 
+     /tmp/ccihkUuv.s:1172   .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/ccihkUuv.s:2196   .debug_str:000000000000063c .LASF117
+     /tmp/ccihkUuv.s:2024   .debug_str:0000000000000170 .LASF118
+     /tmp/ccihkUuv.s:2054   .debug_str:000000000000024e .LASF119
+     /tmp/ccihkUuv.s:5      .text:0000000000000000 .Ltext0
+     /tmp/ccihkUuv.s:144    .text:00000000000000e4 .Letext0
+     /tmp/ccihkUuv.s:1972   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/ccihkUuv.s:2064   .debug_str:00000000000002aa .LASF0
+     /tmp/ccihkUuv.s:2080   .debug_str:0000000000000338 .LASF1
+     /tmp/ccihkUuv.s:2150   .debug_str:0000000000000539 .LASF2
+     /tmp/ccihkUuv.s:2156   .debug_str:0000000000000564 .LASF4
+     /tmp/ccihkUuv.s:2070   .debug_str:00000000000002df .LASF3
+     /tmp/ccihkUuv.s:1986   .debug_str:0000000000000060 .LASF5
+     /tmp/ccihkUuv.s:2138   .debug_str:00000000000004d9 .LASF6
+     /tmp/ccihkUuv.s:2134   .debug_str:00000000000004b5 .LASF7
+     /tmp/ccihkUuv.s:2076   .debug_str:0000000000000320 .LASF8
+     /tmp/ccihkUuv.s:2050   .debug_str:000000000000022a .LASF9
+     /tmp/ccihkUuv.s:2058   .debug_str:0000000000000278 .LASF10
+     /tmp/ccihkUuv.s:2012   .debug_str:0000000000000114 .LASF11
+     /tmp/ccihkUuv.s:2040   .debug_str:00000000000001cc .LASF12
+     /tmp/ccihkUuv.s:2022   .debug_str:0000000000000160 .LASF13
+     /tmp/ccihkUuv.s:2010   .debug_str:0000000000000104 .LASF14
+     /tmp/ccihkUuv.s:2180   .debug_str:00000000000005f3 .LASF15
+     /tmp/ccihkUuv.s:2038   .debug_str:00000000000001b6 .LASF16
+     /tmp/ccihkUuv.s:2172   .debug_str:00000000000005c4 .LASF17
+     /tmp/ccihkUuv.s:2098   .debug_str:00000000000003bc .LASF18
+     /tmp/ccihkUuv.s:2186   .debug_str:000000000000060f .LASF120
+     /tmp/ccihkUuv.s:2158   .debug_str:000000000000056b .LASF19
+     /tmp/ccihkUuv.s:1984   .debug_str:0000000000000054 .LASF21
+     /tmp/ccihkUuv.s:2188   .debug_str:0000000000000617 .LASF23
+     /tmp/ccihkUuv.s:2110   .debug_str:000000000000040e .LASF25
+     /tmp/ccihkUuv.s:1998   .debug_str:00000000000000a0 .LASF20
+     /tmp/ccihkUuv.s:2208   .debug_str:0000000000000738 .LASF22
+     /tmp/ccihkUuv.s:2086   .debug_str:0000000000000365 .LASF24
+     /tmp/ccihkUuv.s:2212   .debug_str:000000000000075a .LASF26
+     /tmp/ccihkUuv.s:2178   .debug_str:00000000000005e6 .LASF27
+     /tmp/ccihkUuv.s:2044   .debug_str:00000000000001e0 .LASF28
+     /tmp/ccihkUuv.s:2124   .debug_str:000000000000046e .LASF121
+     /tmp/ccihkUuv.s:2082   .debug_str:000000000000034b .LASF31
+     /tmp/ccihkUuv.s:2198   .debug_str:0000000000000700 .LASF33
+     /tmp/ccihkUuv.s:2194   .debug_str:0000000000000634 .LASF122
+     /tmp/ccihkUuv.s:2168   .debug_str:00000000000005ac .LASF123
+     /tmp/ccihkUuv.s:2074   .debug_str:0000000000000311 .LASF124
+     /tmp/ccihkUuv.s:1992   .debug_str:0000000000000078 .LASF29
+     /tmp/ccihkUuv.s:2154   .debug_str:0000000000000554 .LASF30
+     /tmp/ccihkUuv.s:2092   .debug_str:000000000000039a .LASF32
+     /tmp/ccihkUuv.s:2090   .debug_str:000000000000038b .LASF34
+     /tmp/ccihkUuv.s:2226   .debug_str:00000000000007d7 .LASF35
+     /tmp/ccihkUuv.s:2056   .debug_str:000000000000026c .LASF36
+GAS LISTING /tmp/ccihkUuv.s 			page 6
+
+
+     /tmp/ccihkUuv.s:2006   .debug_str:00000000000000e2 .LASF37
+     /tmp/ccihkUuv.s:2046   .debug_str:0000000000000202 .LASF38
+     /tmp/ccihkUuv.s:1978   .debug_str:000000000000000e .LASF39
+     /tmp/ccihkUuv.s:2120   .debug_str:0000000000000449 .LASF41
+     /tmp/ccihkUuv.s:2170   .debug_str:00000000000005b1 .LASF40
+     /tmp/ccihkUuv.s:2152   .debug_str:0000000000000547 .LASF42
+     /tmp/ccihkUuv.s:2144   .debug_str:0000000000000504 .LASF125
+     /tmp/ccihkUuv.s:1976   .debug_str:0000000000000009 .LASF43
+     /tmp/ccihkUuv.s:2224   .debug_str:00000000000007d1 .LASF44
+     /tmp/ccihkUuv.s:2204   .debug_str:0000000000000721 .LASF45
+     /tmp/ccihkUuv.s:2200   .debug_str:0000000000000710 .LASF46
+     /tmp/ccihkUuv.s:2184   .debug_str:0000000000000606 .LASF47
+     /tmp/ccihkUuv.s:2130   .debug_str:0000000000000491 .LASF48
+     /tmp/ccihkUuv.s:2004   .debug_str:00000000000000d4 .LASF50
+     /tmp/ccihkUuv.s:2088   .debug_str:0000000000000372 .LASF52
+     /tmp/ccihkUuv.s:2100   .debug_str:00000000000003c1 .LASF49
+     /tmp/ccihkUuv.s:2026   .debug_str:0000000000000181 .LASF112
+     /tmp/ccihkUuv.s:1982   .debug_str:000000000000002c .LASF113
+     /tmp/ccihkUuv.s:2032   .debug_str:00000000000001a0 .LASF51
+     /tmp/ccihkUuv.s:2018   .debug_str:0000000000000146 .LASF53
+     /tmp/ccihkUuv.s:2128   .debug_str:0000000000000484 .LASF54
+     /tmp/ccihkUuv.s:2162   .debug_str:000000000000057a .LASF55
+     /tmp/ccihkUuv.s:2148   .debug_str:000000000000052f .LASF56
+     /tmp/ccihkUuv.s:1974   .debug_str:0000000000000000 .LASF57
+     /tmp/ccihkUuv.s:2160   .debug_str:0000000000000570 .LASF58
+     /tmp/ccihkUuv.s:2000   .debug_str:00000000000000ac .LASF59
+     /tmp/ccihkUuv.s:1980   .debug_str:000000000000001e .LASF60
+     /tmp/ccihkUuv.s:2016   .debug_str:000000000000013a .LASF61
+     /tmp/ccihkUuv.s:2228   .debug_str:00000000000007e4 .LASF62
+     /tmp/ccihkUuv.s:2112   .debug_str:0000000000000425 .LASF63
+     /tmp/ccihkUuv.s:2222   .debug_str:00000000000007c4 .LASF64
+     /tmp/ccihkUuv.s:2042   .debug_str:00000000000001db .LASF65
+     /tmp/ccihkUuv.s:2116   .debug_str:0000000000000437 .LASF66
+     /tmp/ccihkUuv.s:2146   .debug_str:000000000000051b .LASF67
+     /tmp/ccihkUuv.s:2210   .debug_str:000000000000074f .LASF68
+     /tmp/ccihkUuv.s:1988   .debug_str:0000000000000067 .LASF69
+     /tmp/ccihkUuv.s:2214   .debug_str:0000000000000773 .LASF70
+     /tmp/ccihkUuv.s:1990   .debug_str:0000000000000072 .LASF71
+     /tmp/ccihkUuv.s:1994   .debug_str:000000000000007e .LASF72
+     /tmp/ccihkUuv.s:2034   .debug_str:00000000000001a9 .LASF73
+     /tmp/ccihkUuv.s:2014   .debug_str:0000000000000123 .LASF74
+     /tmp/ccihkUuv.s:2182   .debug_str:00000000000005ff .LASF75
+     /tmp/ccihkUuv.s:2220   .debug_str:00000000000007ab .LASF76
+     /tmp/ccihkUuv.s:1996   .debug_str:0000000000000096 .LASF77
+     /tmp/ccihkUuv.s:2048   .debug_str:000000000000020e .LASF78
+     /tmp/ccihkUuv.s:2216   .debug_str:0000000000000791 .LASF79
+     /tmp/ccihkUuv.s:2062   .debug_str:0000000000000290 .LASF80
+     /tmp/ccihkUuv.s:2096   .debug_str:00000000000003a8 .LASF81
+     /tmp/ccihkUuv.s:2084   .debug_str:0000000000000351 .LASF82
+     /tmp/ccihkUuv.s:2108   .debug_str:00000000000003f9 .LASF83
+     /tmp/ccihkUuv.s:2164   .debug_str:000000000000058b .LASF84
+     /tmp/ccihkUuv.s:2106   .debug_str:00000000000003f2 .LASF85
+     /tmp/ccihkUuv.s:2002   .debug_str:00000000000000ba .LASF86
+     /tmp/ccihkUuv.s:2202   .debug_str:000000000000071a .LASF87
+     /tmp/ccihkUuv.s:2132   .debug_str:000000000000049b .LASF88
+     /tmp/ccihkUuv.s:2192   .debug_str:0000000000000627 .LASF89
+     /tmp/ccihkUuv.s:2072   .debug_str:00000000000002f1 .LASF90
+GAS LISTING /tmp/ccihkUuv.s 			page 7
+
+
+     /tmp/ccihkUuv.s:2052   .debug_str:000000000000023a .LASF91
+     /tmp/ccihkUuv.s:2166   .debug_str:00000000000005a0 .LASF92
+     /tmp/ccihkUuv.s:2028   .debug_str:000000000000018f .LASF93
+     /tmp/ccihkUuv.s:2118   .debug_str:0000000000000444 .LASF94
+     /tmp/ccihkUuv.s:2094   .debug_str:000000000000039f .LASF95
+     /tmp/ccihkUuv.s:2020   .debug_str:0000000000000159 .LASF96
+     /tmp/ccihkUuv.s:2176   .debug_str:00000000000005e1 .LASF97
+     /tmp/ccihkUuv.s:2114   .debug_str:0000000000000432 .LASF98
+     /tmp/ccihkUuv.s:2078   .debug_str:0000000000000333 .LASF99
+     /tmp/ccihkUuv.s:2206   .debug_str:0000000000000729 .LASF100
+     /tmp/ccihkUuv.s:2104   .debug_str:00000000000003e4 .LASF101
+     /tmp/ccihkUuv.s:2126   .debug_str:0000000000000473 .LASF102
+     /tmp/ccihkUuv.s:2060   .debug_str:0000000000000286 .LASF103
+     /tmp/ccihkUuv.s:2068   .debug_str:00000000000002ce .LASF104
+     /tmp/ccihkUuv.s:2102   .debug_str:00000000000003d1 .LASF126
+     /tmp/ccihkUuv.s:2140   .debug_str:00000000000004e0 .LASF127
+     /tmp/ccihkUuv.s:2174   .debug_str:00000000000005da .LASF105
+     /tmp/ccihkUuv.s:2066   .debug_str:00000000000002b7 .LASF106
+     /tmp/ccihkUuv.s:2036   .debug_str:00000000000001ae .LASF107
+     /tmp/ccihkUuv.s:2122   .debug_str:0000000000000456 .LASF108
+     /tmp/ccihkUuv.s:2142   .debug_str:00000000000004f3 .LASF109
+     /tmp/ccihkUuv.s:2136   .debug_str:00000000000004c8 .LASF110
+     /tmp/ccihkUuv.s:2218   .debug_str:0000000000000799 .LASF111
+     /tmp/ccihkUuv.s:2008   .debug_str:00000000000000f2 .LASF114
+     /tmp/ccihkUuv.s:2190   .debug_str:0000000000000622 .LASF115
+     /tmp/ccihkUuv.s:80     .text:0000000000000074 .LFB51
+     /tmp/ccihkUuv.s:142    .text:00000000000000e4 .LFE51
+     /tmp/ccihkUuv.s:2030   .debug_str:000000000000019b .LASF116
+     /tmp/ccihkUuv.s:1909   .debug_loc:0000000000000000 .LLST2
+     /tmp/ccihkUuv.s:100    .text:0000000000000098 .LVL7
+     /tmp/ccihkUuv.s:124    .text:00000000000000c8 .LVL8
+     /tmp/ccihkUuv.s:10     .text:0000000000000000 .LFB50
+     /tmp/ccihkUuv.s:74     .text:0000000000000074 .LFE50
+     /tmp/ccihkUuv.s:1927   .debug_loc:000000000000004c .LLST0
+     /tmp/ccihkUuv.s:1945   .debug_loc:0000000000000098 .LLST1
+     /tmp/ccihkUuv.s:34     .text:000000000000002c .LVL2
+     /tmp/ccihkUuv.s:58     .text:000000000000005c .LVL3
+     /tmp/ccihkUuv.s:83     .text:0000000000000074 .LVL5
+     /tmp/ccihkUuv.s:98     .text:0000000000000090 .LVL6
+     /tmp/ccihkUuv.s:137    .text:00000000000000dc .LVL9
+     /tmp/ccihkUuv.s:14     .text:0000000000000000 .LVL0
+     /tmp/ccihkUuv.s:32     .text:0000000000000024 .LVL1
+     /tmp/ccihkUuv.s:67     .text:0000000000000068 .LVL4
+     /tmp/ccihkUuv.s:151    .debug_info:0000000000000000 .Ldebug_info0
+
+UNDEFINED SYMBOLS
+_ZN10kSemaphore4waitEv
+_ZN10kSemaphore6signalEv
